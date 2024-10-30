@@ -32,3 +32,28 @@ gradient.addColorStop(1, "#FFCC70"); // 100%
 // 将渐变设为填充样式并填充整个 canvas
 ctx.fillStyle = gradient;
 ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+const iconBtn = document.getElementById("iconBtn") as HTMLButtonElement | null;
+
+if (iconBtn === null) {
+  throw new Error("Can not find canvas element");
+}
+
+iconBtn.addEventListener("click", () => {
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "image/*";
+  input.onchange = () => {
+    const file = input.files?.[0];
+    if (!file || file.type !== "image/svg+xml") {
+      return;
+    }
+    const imgUrl = URL.createObjectURL(file);
+    const img = new Image();
+    img.src = imgUrl;
+    img.onload = () => {
+      ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, 50, 50);
+    };
+  };
+  input.click();
+});
